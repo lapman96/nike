@@ -1,6 +1,6 @@
 package com.nike.components;
 
-import com.nike.PagesUrl;
+import lombok.SneakyThrows;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,11 +13,12 @@ public class CookiesPopup extends BaseComponent {
 
     public CookiesPopup(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver,this);
+        PageFactory.initElements(driver, this);
     }
 
+    @SneakyThrows
     public void acceptAllCookies() {
-        driver.get(PagesUrl.BASE_URL);
         acceptAllButton.click();
+        Thread.sleep(3000);
     }
 }

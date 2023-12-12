@@ -1,10 +1,12 @@
-package com.nike.driver;
+package com.herokuapp.driver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
 public class DriverSingleton {
     static WebDriver driver;
+
+    private DriverSingleton(){}
 
     public static synchronized WebDriver getDriver() {
         return driver == null ? WebDriverManager.firefoxdriver().create() : driver;

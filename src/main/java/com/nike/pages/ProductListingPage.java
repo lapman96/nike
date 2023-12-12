@@ -1,9 +1,11 @@
 package com.nike.pages;
 
-import com.nike.components.Header;
-import com.nike.elements.Product;
+import com.nike.components.filter.Filters;
+import com.nike.dto.ProductDto;
+import com.nike.elements.product_listing.ProductCart;
+import lombok.Getter;
+import lombok.SneakyThrows;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,50 +13,83 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.List;
 import java.util.function.Predicate;
 
+
 public class ProductListingPage extends BasePage{
-    private Header header;
+    @Getter
+    private Filters filter;
 
     @FindBy(xpath = "//span[@class=\"wall-header__item_count\"]")
     private WebElement totalProductsCounter;
 
-    @FindBy(xpath = "//div[@class=\"loader-bar css-19k7nfv\"]")
-    private WebElement loader;
+    private final By productCardXpath = By.xpath("//div[@data-testid=\"product-card\"]");
 
     public ProductListingPage(WebDriver driver) {
         super(driver);
-        this.header = new Header(driver);
+        this.filter = new Filters(driver);
         PageFactory.initElements(driver,this);
     }
 
-    public List<Product> getProducts() throws InterruptedException {
-        scrollPageToBottom();
-        return driver.findElements(By.xpath("//div[@data-testid=\"product-card\"]"))
+    public List<ProductCart> getProducts() {
+        scrollThroughAllProducts();
+        return driver.findElements(productCardXpath)
                 .stream()
-                .map(Product::new)
+                .map(root -> new ProductCart(driver,root))
                 .toList();
     }
 
-    public Product getProduct(Predicate<Product> condition) throws InterruptedException {
-        return getProducts()
-                .stream()
-                .filter(condition)
-                .findFirst()
-                .orElseThrow();
+    public ProductCart getFirstProductOnThePageAsProductCart() {
+        WebElement firstProductCartOnThePage = driver.findElement(productCardXpath);
+        return new ProductCart(driver, firstProductCartOnThePage);
     }
 
-    private void scrollPageToBottom() throws InterruptedException {
-        int totalProducts = getTotalProductsCounter();
+    public ProductListingPage getFirstProductAndSaveItToProductDto(ProductDto productDto) {
+        ProductCart firstProduct = getFirstProductOnThePageAsProductCart();
+        transferAllDataFromProductCartToProductDto(firstProduct, productDto);
+        return this;
+    }
+
+    public ProductListingPage getProductByConditionAndSaveItToProductDto(Predicate<ProductCart> predicate, ProductDto productDto) {
+        ProductCart productCart = getProducts()
+                .stream()
+                .filter(predicate)
+                .findFirst()
+                .orElseThrow();
+
+        transferAllDataFromProductCartToProductDto(productCart, productDto);
+        return this;
+    }
+
+    public ProductDetailsPage clickOnTheProductCardByItsPosition(int productPositionIndex) {
+        String productXpath = String.format("//div[@data-product-position=\"%d\"]", productPositionIndex);
+        driver.findElement(By.xpath(productXpath)).click();
+        return new ProductDetailsPage(driver);
+    }
+
+    @SneakyThrows
+    private void scrollThroughAllProducts() {
+        int totalProducts = getTotalNumberOfProductsFromProductCounter();
         int numberOfVisibleProducts = 0;
+
         do {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+            scrollPageToBottom();
             Thread.sleep(2000);
-            numberOfVisibleProducts = driver.findElements(By.xpath("//div[@data-testid=\"product-card\"]")).size();
+            numberOfVisibleProducts = driver.findElements(productCardXpath).size();
         } while (numberOfVisibleProducts < totalProducts);
     }
 
-    public int getTotalProductsCounter() {
+    public int getTotalNumberOfProductsFromProductCounter() {
         String counter = totalProductsCounter.getText();
         return Integer.parseInt(counter.replaceAll("[^\\d]", ""));
+    }
+
+    private void transferAllDataFromProductCartToProductDto(ProductCart productCart, ProductDto productDto) {
+        productDto.setLabel(productCart.getLabel());
+        productDto.setName(productCart.getName());
+        productDto.setSubtitle(productCart.getSubtitle());
+        productDto.setNumberOfColours(productCart.getNumberOfColors());
+        productDto.setBasicPrice(productCart.getBasicPrice());
+        productDto.setReducedPrice(productCart.getReducedPrice());
+        productDto.setPercentageOfDiscount(productCart.getPercentageOfDiscount());
+        productDto.setProductPositionIndex(productCart.getProductPositionIndex());
     }
 }
