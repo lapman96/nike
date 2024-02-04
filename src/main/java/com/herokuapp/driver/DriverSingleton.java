@@ -9,7 +9,7 @@ public class DriverSingleton {
     private DriverSingleton(){}
 
     public static synchronized WebDriver getDriver() {
-        return driver == null ? WebDriverManager.firefoxdriver().create() : driver;
+        return driver == null ? WebDriverManager.chromedriver().create() : driver;
     }
 
     public static synchronized void closeDriver() {
