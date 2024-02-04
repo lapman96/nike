@@ -6,11 +6,14 @@ import org.openqa.selenium.WebDriver;
 public class DriverSingleton {
     static WebDriver driver;
 
-    public static synchronized WebDriver getDriver() {
-        return driver == null ? WebDriverManager.firefoxdriver().create() : driver;
+    private DriverSingleton() {
     }
 
-    public static synchronized void closeDriver() {
+    public static WebDriver getDriver() {
+        return driver == null ? WebDriverManager.chromedriver().create() : driver;
+    }
+
+    public static void closeDriver() {
         if (driver != null) {
             driver.quit();
             driver = null;

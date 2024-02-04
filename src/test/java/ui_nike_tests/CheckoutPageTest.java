@@ -14,7 +14,7 @@ class CheckoutPageTest extends BaseTest {
         ProductListingPage productListingPage = new ProductListingPage(driver);
         productListingPage
                 .openProductListingTestPage()
-                .getProductByConditionAndSaveItToProductDto(productCart -> productCart.getNumberOfColors() > 1, productDto)
+                .getFirstProductAndSaveItToProductDto(productDto)
                 .clickOnTheProductCardByItsPosition(productDto.getProductPositionIndex())
                 .selectAnyColorAndSaveItToProductDto(productDto)
                 .selectAnyAvailableSizeAndSaveItToProductDto(productDto)

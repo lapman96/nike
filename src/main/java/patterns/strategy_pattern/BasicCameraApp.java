@@ -2,7 +2,7 @@ package patterns.strategy_pattern;
 
 import patterns.strategy_pattern.strategies.Shareable;
 
-public class BasicCameraApp extends PhoneCameraClass {
+public class BasicCameraApp extends PhoneCamera {
     public BasicCameraApp(Shareable shareable) {
         super(shareable);
     }

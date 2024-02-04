@@ -2,10 +2,10 @@ package patterns.strategy_pattern;
 
 import patterns.strategy_pattern.strategies.Shareable;
 
-public abstract class PhoneCameraClass {
+public abstract class PhoneCamera {
     private Shareable shareable;
 
-    protected PhoneCameraClass(Shareable shareable) {
+    protected PhoneCamera(Shareable shareable) {
         this.shareable = shareable;
     }
 
