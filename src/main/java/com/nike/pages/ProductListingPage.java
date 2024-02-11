@@ -1,7 +1,7 @@
 package com.nike.pages;
 
 import com.nike.components.filter.Filters;
-import com.nike.dto.ProductDto;
+import com.nike.dto.ProductDTO;
 import com.nike.elements.product_listing.ProductCart;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -42,13 +42,13 @@ public class ProductListingPage extends BasePage{
         return new ProductCart(driver, firstProductCartOnThePage);
     }
 
-    public ProductListingPage getFirstProductAndSaveItToProductDto(ProductDto productDto) {
+    public ProductListingPage getFirstProductAndSaveItToProductDto(ProductDTO productDto) {
         ProductCart firstProduct = getFirstProductOnThePageAsProductCart();
         transferAllDataFromProductCartToProductDto(firstProduct, productDto);
         return this;
     }
 
-    public ProductListingPage getProductByConditionAndSaveItToProductDto(Predicate<ProductCart> predicate, ProductDto productDto) {
+    public ProductListingPage getProductByConditionAndSaveItToProductDto(Predicate<ProductCart> predicate, ProductDTO productDto) {
         ProductCart productCart = getProducts()
                 .stream()
                 .filter(predicate)
@@ -68,7 +68,7 @@ public class ProductListingPage extends BasePage{
     @SneakyThrows
     private void scrollThroughAllProducts() {
         int totalProducts = getTotalNumberOfProductsFromProductCounter();
-        int numberOfVisibleProducts = 0;
+        int numberOfVisibleProducts;
 
         do {
             scrollPageToBottom();
@@ -82,7 +82,7 @@ public class ProductListingPage extends BasePage{
         return Integer.parseInt(counter.replaceAll("[^\\d]", ""));
     }
 
-    private void transferAllDataFromProductCartToProductDto(ProductCart productCart, ProductDto productDto) {
+    private void transferAllDataFromProductCartToProductDto(ProductCart productCart, ProductDTO productDto) {
         productDto.setLabel(productCart.getLabel());
         productDto.setName(productCart.getName());
         productDto.setSubtitle(productCart.getSubtitle());

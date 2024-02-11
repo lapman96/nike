@@ -1,6 +1,6 @@
 package com.nike.pages;
 
-import com.nike.dto.ProductDto;
+import com.nike.dto.ProductDTO;
 import lombok.Setter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -32,7 +32,7 @@ public class ProductDetailsPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    public ProductDetailsPage selectAnyColorAndSaveItToProductDto(ProductDto productDto) {
+    public ProductDetailsPage selectAnyColorAndSaveItToProductDto(ProductDTO productDto) {
         WebElement colourOption = coloursOptions.get(0);
         String colorOptionName = colourOption.findElement(By.xpath(".//img")).getAttribute("alt");
         productDto.setColour(colorOptionName);
@@ -40,7 +40,7 @@ public class ProductDetailsPage extends BasePage {
         return this;
     }
 
-    public ProductDetailsPage selectAnyAvailableSizeAndSaveItToProductDto(ProductDto productDto) {
+    public ProductDetailsPage selectAnyAvailableSizeAndSaveItToProductDto(ProductDTO productDto) {
         WebElement sizeOption = sizeOptions
                 .stream()
                 .filter(WebElement::isEnabled)

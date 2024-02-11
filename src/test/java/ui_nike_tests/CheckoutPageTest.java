@@ -1,12 +1,12 @@
 package ui_nike_tests;
 
-import com.nike.dto.ProductDto;
+import com.nike.dto.ProductDTO;
 import com.nike.pages.ProductListingPage;
 import org.junit.jupiter.api.Test;
 
 class CheckoutPageTest extends BaseTest {
 
-    ProductDto productDto = ProductDto.builder().build();
+    ProductDTO productDto = ProductDTO.builder().build();
 
     //Test doesn't work since the problem with adding product to the basket
     @Test
