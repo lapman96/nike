@@ -18,7 +18,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.11.0</version>
+            <version>4.17.0</version>
         </dependency>
 
         <dependency>
@@ -31,6 +31,13 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.10.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.10.1</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import java.time.Duration;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -35,6 +36,13 @@ public class ProductListingPage extends BasePage{
                 .stream()
                 .map(root -> new ProductCart(driver,root))
                 .toList();
+    }
+
+    public boolean hasAtLeastOneProductOnThePage() {
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(10));
+        boolean hasProducts = !driver.findElements(productCardXpath).isEmpty();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        return hasProducts;
     }
 
     public ProductCart getFirstProductOnThePageAsProductCart() {

@@ -2,6 +2,7 @@ package com.nike.validation;
 
 import com.nike.components.filter.filter_enums.ShopByPriceFilterOptions;
 import com.nike.elements.product_listing.ProductCart;
+import com.nike.pages.ProductListingPage;
 
 import java.util.List;
 
@@ -24,5 +25,10 @@ public class ProductListingPageValidator extends BaseValidator {
         assertThat(productCart.getSubtitle()).matches("^[a-zA-Z\\s'-]+$");
         assertThat(productCart.getNumberOfColors()).isGreaterThanOrEqualTo(1);
         assertThat(productCart.getBasicPrice()).isGreaterThanOrEqualTo(0.01f);
+    }
+
+    public void checkThatThereIsAtLeastOneProductOnThePage(ProductListingPage productListingPage) {
+        assertThat(productListingPage.hasAtLeastOneProductOnThePage()).isTrue();
+        assertThat(productListingPage.getTotalNumberOfProductsFromProductCounter()).isGreaterThan(0);
     }
 }
